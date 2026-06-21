@@ -1,0 +1,6 @@
+{
+  "appId": "com.aintdoe99.cashbacktracker",
+  "appName": "Cashback Tracker",
+  "webDir": "./",
+  "bundledWebRuntime": false
+}

@@ -1,0 +1,9 @@
+{
+  "name": "cashback-tracker",
+  "version": "1.0.0",
+  "description": "Static PWA wrapper for the BBVA Saveback tracker",
+  "scripts": {
+    "start": "npx serve -s . -l 8080",
+    "build": "echo 'No build step for static site'"
+  }
+}

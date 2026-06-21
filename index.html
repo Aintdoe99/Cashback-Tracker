@@ -1,0 +1,315 @@
+<!doctype html>
+<html lang="de">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>BBVA Saveback v6</title>
+<link rel="manifest" href="/manifest.json">
+<meta name="theme-color" content="#f6fbf7">
+<style>
+:root{
+  --bg:#f6fbf7;--bg2:#edf8f0;--panel:#ffffff;--card:#ffffff;
+  --line:rgba(15,92,54,.12);--text:#0f4a2f;--muted:#667085;
+  --accent:#35b85a;--accent2:#6ee38f;--gold:#d9c58b;
+  --red:#d45252;--shadow:rgba(15,74,47,.12);
+}
+*{box-sizing:border-box}
+html{background:var(--bg)}
+body{
+  margin:0;min-height:100vh;color:var(--text);
+  font-family:"Helvetica Neue",Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;
+  background:
+    radial-gradient(circle at 82% 0%,rgba(68,209,125,.18),transparent 32%),
+    linear-gradient(160deg,#fbfefc 0%,var(--bg2) 55%,#f8fcf9 100%);
+}
+button,input{font:inherit}
+.app{width:min(100%,560px);margin:auto;padding:18px 16px 80px}
+.top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:18px}
+h1{
+  margin:4px 0 0;font-family:"Times New Roman",Georgia,serif;font-weight:400;
+  font-size:clamp(40px,8.5vw,52px);line-height:.92;letter-spacing:-.06em
+}
+.sub{margin:9px 0 0;color:var(--muted);font-size:15px}
+.add{
+  width:48px;height:48px;border:1px solid var(--line);border-radius:50%;
+  background:linear-gradient(160deg,var(--accent),color-mix(in srgb,var(--accent) 55%,#000));
+  color:white;font-size:30px;box-shadow:0 12px 28px rgba(53,184,90,.28)
+}
+.hero{
+  border:1px solid var(--line);background:#fff;border-radius:28px;
+  padding:22px 18px 18px;box-shadow:0 14px 34px var(--shadow);overflow:hidden
+}
+.label{color:var(--accent);font-size:13px;text-transform:uppercase;letter-spacing:.14em}
+.amount{
+  margin-top:8px;font-family:"Times New Roman",Georgia,serif;font-size:58px;
+  line-height:.95;letter-spacing:-.06em
+}
+.max{color:var(--muted);font-size:16px;margin-top:6px}
+.progressWrap{margin-top:20px}
+.bar{
+  height:10px;border-radius:999px;background:#e8f3ec;
+  overflow:hidden;border:1px solid rgba(15,92,54,.06)
+}
+.bar span{
+  display:block;height:100%;width:var(--p);
+  border-radius:999px;background:linear-gradient(90deg,var(--accent),var(--accent2));
+  transition:width .25s ease
+}
+.rest{
+  margin-top:16px;border:1px solid rgba(15,92,54,.08);background:#f3faf5;
+  border-radius:16px;padding:13px 14px;font-size:16px;color:var(--text)
+}
+.rest strong{color:var(--accent);font-weight:800}
+.sectionHead{
+  margin:22px 2px 10px;display:flex;align-items:baseline;justify-content:space-between
+}
+h2{
+  margin:0;font-family:"Times New Roman",Georgia,serif;font-weight:400;
+  font-size:28px;letter-spacing:-.035em
+}
+.small{color:var(--muted);font-size:13px}
+.list{display:grid;gap:8px}
+.item{
+  border:1px solid var(--line);background:#fff;border-radius:17px;
+  padding:13px 14px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 8px 22px var(--shadow)
+}
+.item strong{font-size:18px;color:var(--text)}
+.item span{color:var(--muted);font-size:14px;line-height:1.45}
+.deleteBtn{
+  width:38px;height:38px;border-radius:50%;border:1px solid var(--line);
+  background:#f3faf5;color:var(--accent);font-size:22px;line-height:1
+}
+.deleteBtn:hover{color:var(--red);background:rgba(255,141,141,.10)}
+.empty{
+  padding:26px;text-align:center;color:var(--muted);border:1px solid var(--line);
+  border-radius:20px;background:var(--card)
+}
+.actions{display:grid;gap:10px;margin-top:18px}
+.reset{
+  height:50px;border-radius:22px;border:1px solid var(--line);
+  background:#fff;color:var(--text);box-shadow:0 6px 18px var(--shadow)
+}
+dialog{border:0;border-radius:26px;padding:0;width:calc(100% - 28px);max-width:460px;background:#fff;color:var(--text)}
+dialog::backdrop{background:rgba(0,10,8,.68);backdrop-filter:blur(4px)}
+.modal{padding:18px;border:1px solid var(--line);border-radius:26px;background:var(--panel)}
+.modal h2{font-size:28px;margin-bottom:14px}
+.modal input{
+  width:100%;height:52px;border-radius:18px;border:1px solid var(--line);
+  background:#f6fbf7;color:var(--text);font-size:20px;padding:0 15px;outline:none
+}
+.modal input::placeholder{color:var(--muted)}
+.dialogActions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:14px}
+.btn{
+  height:44px;border-radius:22px;border:1px solid var(--line);
+  background:#f6fbf7;color:var(--text)
+}
+.primary{background:var(--accent);color:white;border:0;font-weight:750}
+.footer{text-align:center;color:var(--muted);font-size:13px;margin-top:24px}
+.ccard{
+  margin:22px auto 0;width:230px;height:132px;border-radius:18px;
+  background:linear-gradient(135deg,rgba(255,255,255,.68),rgba(255,255,255,.20));
+  border:1px solid rgba(15,92,54,.14);
+  box-shadow:0 16px 34px rgba(15,74,47,.10);
+  transform:perspective(500px) rotateX(58deg);
+  position:relative;opacity:.7
+}
+.ccard:before{
+  content:"";position:absolute;left:20px;top:54px;width:34px;height:25px;
+  border:1px solid rgba(15,92,54,.24);border-radius:4px
+}
+.ccard:after{
+  content:"VISA";position:absolute;right:18px;bottom:14px;
+  color:rgba(15,92,54,.32);font-weight:bold
+}
+.ccard .brand{position:absolute;left:18px;top:18px;color:rgba(15,92,54,.28);font-weight:bold;letter-spacing:.08em}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="top">
+    <div>
+      <h1>BBVA<br>Saveback</h1>
+      <p class="sub">Monatlicher Fortschritt</p>
+    </div>
+    <button class="add" onclick="openAdd()">＋</button>
+  </div>
+
+  <section class="hero">
+    <div class="label">BBVA Saveback</div>
+    <div class="amount" id="total">0,00 €</div>
+    <div class="max">von 500,00 € Maximum</div>
+
+    <div class="progressWrap">
+      <div class="bar" id="bar" style="--p:0%"><span></span></div>
+    </div>
+
+    <div class="rest" id="rest">Noch <strong>500,00 €</strong> bis zum Maximum.</div>
+  </section>
+
+  <div class="sectionHead">
+    <h2>Eintragslog</h2>
+    <span class="small" id="count">0</span>
+  </div>
+  <div class="list" id="entries"></div>
+
+  <div class="actions">
+    <button class="reset" onclick="resetMonth()">Monat zurücksetzen</button>
+    <button class="reset" onclick="exportData()">Daten exportieren</button>
+    <button class="reset" onclick="importData()">Daten importieren</button>
+  </div>
+
+  <div class="footer">Daten werden lokal im Browser gespeichert.</div><div class="ccard"><div class="brand">BBVA</div></div>
+</div>
+
+<dialog id="addDialog">
+  <div class="modal">
+    <h2>Betrag hinzufügen</h2>
+    <input id="amountInput" inputmode="decimal" placeholder="z.B. 12,49"><br><br><input id="descInput" placeholder="Beschreibung (z.B. Amazon, Urlaub, Hotel)">
+    <div class="dialogActions">
+      <button class="btn" onclick="addDialog.close()">Abbrechen</button>
+      <button class="btn primary" onclick="saveAmount()">Speichern</button>
+    </div>
+  </div>
+</dialog>
+
+<script>
+const STORE="bbva_saveback_entries_v1";
+const LIMIT=500;
+let entries=JSON.parse(localStorage.getItem(STORE)||"[]");
+
+function euro(n){
+  return Number(n||0).toLocaleString("de-DE",{style:"currency",currency:"EUR"});
+}
+function save(){
+  localStorage.setItem(STORE,JSON.stringify(entries));
+}
+function sum(){
+  return entries.reduce((a,e)=>a+Number(e.amount||0),0);
+}
+function parseAmount(s){
+  return Number(String(s||"").replace(/\./g,"").replace(",",".").replace(/[^\d.-]/g,""));
+}
+function render(){
+  const totalAmount=sum();
+  const progress=Math.min(100,(totalAmount/LIMIT)*100);
+  const remaining=Math.max(0,LIMIT-totalAmount);
+
+  total.textContent=euro(totalAmount);
+  bar.style.setProperty("--p",progress+"%");
+  count.textContent=entries.length;
+
+  if(totalAmount>=LIMIT){
+    rest.innerHTML=`🎉 Maximum erreicht. ${totalAmount>LIMIT ? `Du liegst ${euro(totalAmount-LIMIT)} darüber.` : ""}`;
+  }else{
+    rest.innerHTML=`Noch <strong>${euro(remaining)}</strong> bis zum Maximum.`;
+  }
+
+  const entriesContainer = document.getElementById("entries");
+  entriesContainer.innerHTML = entries.length ? entries.slice().reverse().map(e=>`
+    <div class="item">
+      <div>
+        <strong>+ ${euro(e.amount)}</strong><br>
+        <span>${e.description||"Eintrag"}<br>${new Date(e.date).toLocaleDateString("de-DE")}</span>
+      </div>
+      <div>
+        <button class="deleteBtn" onclick="editEntry('${e.id}')">✎</button>
+        <button class="deleteBtn" onclick="deleteEntry('${e.id}')">×</button>
+      </div>
+    </div>
+  `).join("") : `<div class="empty">Noch keine Beträge eingetragen.</div>`;
+}
+function openAdd(){
+  amountInput.value="";
+  addDialog.showModal();
+  setTimeout(()=>amountInput.focus(),80);
+}
+amountInput.addEventListener("keydown",e=>{if(e.key==="Enter")saveAmount()});
+function saveAmount(){
+  const val=parseAmount(amountInput.value);
+  if(!val || val<=0) return alert("Bitte einen gültigen Betrag eingeben.");
+  entries.push({id:crypto.randomUUID(),amount:Math.round(val*100)/100,description:(descInput.value||"").trim(),date:new Date().toISOString()});
+  save();
+  addDialog.close();
+  render();
+}
+
+function editEntry(id){
+ const e=entries.find(x=>x.id===id);
+ if(!e) return;
+ const d=prompt("Beschreibung",e.description||"");
+ if(d===null) return;
+ const a=prompt("Betrag",String(e.amount).replace(".",","));
+ if(a===null) return;
+ const val=parseAmount(a);
+ if(!val||val<=0) return;
+ e.amount=Math.round(val*100)/100;
+ e.description=d.trim();
+ save(); render();
+}
+function deleteEntry(id){
+
+  const entry = entries.find(e=>e.id===id);
+  if(!entry) return;
+  if(confirm(`${euro(entry.amount)} wirklich aus dem Eintragslog löschen?`)){
+    entries=entries.filter(e=>e.id!==id);
+    save();
+    render();
+  }
+}
+function resetMonth(){
+  if(confirm("Diesen Monat wirklich zurücksetzen?")){
+    entries=[];
+    save();
+    render();
+  }
+}
+function exportData(){
+  const backup = { entries, exportedAt:new Date().toISOString() };
+  const blob = new Blob([JSON.stringify(backup,null,2)], {type:"application/json"});
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "bbva-saveback-backup.json";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+function importData(){
+  const input = document.createElement("input");
+  input.type = "file";
+  input.accept = "application/json";
+  input.onchange = async e => {
+    const file = e.target.files[0];
+    if(!file) return;
+    try{
+      const data = JSON.parse(await file.text());
+      const imported = Array.isArray(data) ? data : data.entries;
+      if(!Array.isArray(imported)) throw new Error("Keine Einträge gefunden.");
+      entries = imported
+        .filter(x => x && Number(x.amount) > 0)
+        .map(x => ({
+          id: x.id || crypto.randomUUID(),
+          amount: Math.round(Number(x.amount) * 100) / 100,
+          description: x.description || "",
+          date: x.date || new Date().toISOString()
+        }));
+      save();
+      render();
+      alert("Import erfolgreich.");
+    }catch(err){
+      alert("Import fehlgeschlagen: " + (err.message || err));
+    }
+  };
+  input.click();
+}
+
+// Service worker registration for PWA/offline support
+if('serviceWorker' in navigator){
+  window.addEventListener('load',()=>{
+    navigator.serviceWorker.register('/sw.js').catch(()=>{/* ignore */});
+  });
+}
+
+render();
+</script>
+</body>
+</html>
