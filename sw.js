@@ -1,11 +1,15 @@
 const CACHE_NAME = 'cashback-tracker-v1';
 const ASSETS = [
-  '/',
-  '/index.html',
-  '/manifest.json',
-  '/icons/icon-192.png',
-  '/icons/icon-512.png',
-  '/icons/app-icon.png'
+  './',
+  './index.html',
+  './manifest.json',
+  './icons/icon-192.png',
+  './icons/icon-512.png',
+  './icons/app-icon.png',
+  './icons/android-chrome-192.png',
+  './icons/android-chrome-512.png',
+  './icons/android-chrome-maskable-512.png',
+  './icons/apple-touch-icon.png'
 ];
 
 self.addEventListener('install', event => {
