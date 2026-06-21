@@ -1,11 +1,12 @@
 {
-  "name": "Cashback Tracker",
+  "name": "Cashback-Tracker",
   "short_name": "Cashback",
-  "start_url": "./",
+  "start_url": "./index.html",
+  "scope": "./",
   "display": "standalone",
   "background_color": "#f6fbf7",
   "theme_color": "#f6fbf7",
-  "description": "BBVA Saveback - einfacher Tracker für Monats-Fortschritt",
+  "description": "Einfacher Tracker für den monatlichen Cashback-Fortschritt",
   "icons": [
     {
       "src": "icons/icon-192.png",
@@ -18,15 +19,10 @@
       "type": "image/png"
     },
     {
-      "src": "icons/android-chrome-maskable-512.png",
-      "sizes": "512x512",
-      "type": "image/png",
-      "purpose": "maskable"
-    },
-    {
       "src": "icons/app-icon.png",
       "sizes": "512x512",
       "type": "image/png"
     }
   ]
+}
 }
